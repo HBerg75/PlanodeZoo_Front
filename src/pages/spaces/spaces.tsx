@@ -36,8 +36,13 @@ export default function Spaces() {
   console.log(spaces);
 
   const handleDetails = (id: string) => {
-    router.push(`/spaces/${id}`);
+    router.push(`/spaces/details/${id}`);
   };
+
+  const handleEdit = (id: string) => {
+    router.push(`/spaces/modify/${id}`);
+  };
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -123,7 +128,7 @@ export default function Spaces() {
                       />
                     </td>
                     <td
-                      onClick={() => console.log("ok")}
+                      onClick={() => handleEdit(item._id)}
                       className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
                     >
                       <PencilSquareIcon
