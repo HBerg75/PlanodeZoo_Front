@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import {
   TrashIcon,
   PencilSquareIcon,
@@ -6,24 +7,37 @@ import {
   WrenchScrewdriverIcon,
   CheckIcon,
 } from "@heroicons/react/24/outline";
-
 import SpaceService from "../../services/spaceService";
 import { ISpace } from "@/interfaces/space";
 
+const tableHeaders = [
+  "Name",
+  "Status",
+  "Description",
+  "Maintenance",
+  "Maintenance Off",
+  "Details",
+  "Edit",
+  "Delete",
+];
+
 export default function Spaces() {
   const [spaces, setSpaces] = useState<ISpace[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchSpaces = async () => {
       const spacesData = await SpaceService.getAllSpaces();
       setSpaces(spacesData);
     };
-    
     fetchSpaces();
   }, []);
 
   console.log(spaces);
 
+  const handleDetails = (id: string) => {
+    router.push(`/spaces/${id}`);
+  };
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -50,57 +64,15 @@ export default function Spaces() {
             <table className="min-w-full divide-y divide-gray-300">
               <thead>
                 <tr>
-                  <th
-                    scope="col"
-                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                  >
-                    Name
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Status
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Description
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Maintenance
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Maintenance Off
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Details
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Edit
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
-                    Delete
-                  </th>
-                  <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                    <span className="sr-only">Edit</span>
-                  </th>
+                  {tableHeaders.map((header) => (
+                    <th
+                      key={header}
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
+                      {header}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -109,14 +81,18 @@ export default function Spaces() {
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                       {item.name}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {item.status}
+                    <td
+                      className={`whitespace-nowrap px-3 py-4 text-sm ${
+                        item.status ? "text-red-500" : "text-green-500"
+                      }`}
+                    >
+                      {item.status ? "En maintenance" : "Fonctionnel"}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {item.description}
                     </td>{" "}
                     <td
-                      onClick={() => console.log("ok")}
+                      onClick={() => SpaceService.setMaintenance(item._id)}
                       className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
                     >
                       <WrenchScrewdriverIcon
@@ -125,7 +101,7 @@ export default function Spaces() {
                       />
                     </td>
                     <td
-                      onClick={() => console.log("ok")}
+                      onClick={() => SpaceService.unsetMaintenance(item._id)}
                       className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
                     >
                       <CheckIcon
@@ -133,13 +109,11 @@ export default function Spaces() {
                         className="cursor-pointer h-5 w-5 text-gray-400"
                       />
                     </td>
-                    <td
-                      onClick={() => console.log("ok")}
-                      className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
-                    >
+                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                       <EyeIcon
                         aria-hidden="true"
                         className="cursor-pointer h-5 w-5 text-gray-400"
+                        onClick={() => handleDetails(item._id)}
                       />
                     </td>
                     <td
@@ -152,7 +126,7 @@ export default function Spaces() {
                       />
                     </td>
                     <td
-                      onClick={() => console.log("ok")}
+                      onClick={() => SpaceService.deleteSpace(item._id)}
                       className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
                     >
                       <TrashIcon
