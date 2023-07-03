@@ -1,5 +1,7 @@
 import { API_URL } from "../utils/url";
 import { ISpace } from "../interfaces/space";
+import authHeader from '@/services/authHeader'; 
+import axios from "axios";
 
 class SpaceService {
   // L'URL de base de votre API
@@ -7,11 +9,12 @@ class SpaceService {
 
   // Récupérer tous les espaces
   static async getAllSpaces(): Promise<ISpace[]> {
-    const response = await fetch(`${this.baseUrl}spaces/getallspaces`);
-    if (!response.ok) {
-      throw new Error(`An error has occurred: ${response.status}`);
+    try {
+      const response = await axios.get(`${API_URL}spaces/getallspaces`, { headers: authHeader() });
+      return response.data as ISpace[];
+    } catch (error) {
+      throw new Error(`An error has occurred: ${error}`);
     }
-    return await response.json() as ISpace[];
   }
 
   // Créer un nouvel espace
@@ -19,7 +22,8 @@ class SpaceService {
     const response = await fetch(`${this.baseUrl}spaces/createspace`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.getAuthToken()}`
       },
       body: JSON.stringify(spaceData)
     });
@@ -34,7 +38,8 @@ class SpaceService {
     const response = await fetch(`${this.baseUrl}spaces/update/${id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.getAuthToken()}`
       },
       body: JSON.stringify(updatedSpaceData)
     });
