@@ -1,47 +1,84 @@
+import axios from "axios";
 import { API_URL } from "../utils/url";
 import { ISpace } from "../interfaces/space";
 
 class SpaceService {
-  // L'URL de base de votre API
-  static baseUrl: string = API_URL;
-
   // Récupérer tous les espaces
   static async getAllSpaces(): Promise<ISpace[]> {
-    const response = await fetch(`${this.baseUrl}spaces/getallspaces`);
-    if (!response.ok) {
-      throw new Error(`An error has occurred: ${response.status}`);
+    try {
+      const response = await axios.get(`${API_URL}spaces/getallspaces`);
+      return response.data as ISpace[];
+    } catch (error) {
+      throw new Error(`An error has occurred: ${error}`);
     }
-    return await response.json() as ISpace[];
+  }
+
+  // Récupérer un espace par ID
+  static async getSpaceById(id: string | string[]): Promise<ISpace> {
+    try {
+      const response = await axios.get(`${API_URL}spaces/getspacebyid/${id}`);
+      return response.data as ISpace;
+    } catch (error) {
+      throw new Error(`An error has occurred: ${error}`);
+    }
   }
 
   // Créer un nouvel espace
   static async createSpace(spaceData: ISpace): Promise<ISpace> {
-    const response = await fetch(`${this.baseUrl}spaces/createspace`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(spaceData)
-    });
-    if (!response.ok) {
-      throw new Error(`An error has occurred: ${response.status}`);
+    try {
+      const response = await axios.post(
+        `${API_URL}spaces/createspace`,
+        spaceData
+      );
+      return response.data as ISpace;
+    } catch (error) {
+      throw new Error(`An error has occurred: ${error}`);
     }
-    return await response.json() as ISpace;
   }
 
   // Modifier un espace
-  static async updateSpace(id: string, updatedSpaceData: Partial<ISpace>): Promise<ISpace> {
-    const response = await fetch(`${this.baseUrl}spaces/update/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updatedSpaceData)
-    });
-    if (!response.ok) {
-      throw new Error(`An error has occurred: ${response.status}`);
+  static async updateSpace(
+    id: string,
+    updatedSpaceData: Partial<ISpace>
+  ): Promise<ISpace> {
+    try {
+      const response = await axios.put(
+        `${API_URL}spaces/update/${id}`,
+        updatedSpaceData
+      );
+      return response.data as ISpace;
+    } catch (error) {
+      throw new Error(`An error has occurred: ${error}`);
     }
-    return await response.json() as ISpace;
+  }
+
+  // Supprimer un espace
+  static async deleteSpace(id: string): Promise<void> {
+    try {
+      await axios.delete(`${API_URL}spaces/delete/${id}`);
+    } catch (error) {
+      throw new Error(`An error has occurred: ${error}`);
+    }
+  }
+
+  // Mettre en maintenance un espace
+  static async setMaintenance(id: string): Promise<ISpace> {
+    try {
+      const response = await axios.put(`${API_URL}spaces/maintenance/${id}`);
+      return response.data as ISpace;
+    } catch (error) {
+      throw new Error(`An error has occurred: ${error}`);
+    }
+  }
+
+  // Lever la maintenance d'un espace
+  static async unsetMaintenance(id: string): Promise<ISpace> {
+    try {
+      const response = await axios.put(`${API_URL}spaces/maintenanceoff/${id}`);
+      return response.data as ISpace;
+    } catch (error) {
+      throw new Error(`An error has occurred: ${error}`);
+    }
   }
 }
 
