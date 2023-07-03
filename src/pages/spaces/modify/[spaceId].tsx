@@ -66,8 +66,7 @@ const ModifySpacePage = () => {
   }, [spaceId, setValue]);
 
   const onSubmit = (data: FormData) => {
-    // Logique de mise à jour de l'espace
-    // Remplacez cela par votre propre logique pour mettre à jour les données de l'espace
+   
     console.log(data);
   };
 
@@ -112,7 +111,7 @@ const ModifySpacePage = () => {
             )}
           </label>
           <label className="flex flex-col">
-            Type: 
+            Type:
             <input
               {...register("type", { required: true })}
               className="mt-2 p-2 border rounded-md"
@@ -153,21 +152,27 @@ const ModifySpacePage = () => {
           </label>
           <label className="flex flex-col">
             Handicapped Access:
-            <input
+            <select
               {...register("handicappedAccess", { required: true })}
               className="mt-2 p-2 border rounded-md"
-            />
-            {errors.description && (
+            >
+              <option value="true">Oui</option>
+              <option value="false">Non</option>
+            </select>
+            {errors.handicappedAccess && (
               <p className="mt-1 text-red-500">Ce champ est requis</p>
             )}
           </label>
 
           <label className="flex flex-col">
             Status:
-            <input
+            <select
               {...register("status", { required: true })}
               className="mt-2 p-2 border rounded-md"
-            />
+            >
+              <option value="true">En maintenance</option>
+              <option value="false">Pas en maintenance</option>
+            </select>
             {errors.status && (
               <p className="mt-1 text-red-500">Ce champ est requis</p>
             )}
