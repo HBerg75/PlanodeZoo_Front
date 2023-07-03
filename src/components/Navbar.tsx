@@ -22,7 +22,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center flex-1 justify-evenly">
             {!user && (
               <Link href="/login">
-                <h1 >Login</h1>
+                <h1>Login</h1>
               </Link>
             )}
             {user?.role === "admin" && (
@@ -33,7 +33,13 @@ export default function Navbar() {
 
             {user?.role === "admin" && (
               <Link href="/spaces/spaces">
-                <h1 >Zoo&apos;s Spaces</h1>
+                <h1>Zoo&apos;s Spaces</h1>
+              </Link>
+            )}
+
+            {user?.role === "admin" && (
+              <Link href="/ticket">
+                <h1>Créer tickets</h1>
               </Link>
             )}
             {user && (

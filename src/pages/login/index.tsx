@@ -44,7 +44,7 @@ export default function Login() {
         className="flex flex-col border p-5 m-5 items-center"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <label htmlFor="email">email</label>
+        <label htmlFor="Username">Username</label>
         <input
           className="border p-2 m-5"
           id="username"
@@ -60,8 +60,8 @@ export default function Login() {
           {...register("password", {
             required: "required",
             minLength: {
-              value: 5,
-              message: "min length is 5",
+              value: 2,
+              message: "min length is 2",
             },
           })}
           type="password"

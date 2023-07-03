@@ -33,7 +33,8 @@ export default function Register() {
         }
       })
       .catch((err) => {
-        toast.error("Problem form !", { duration: 3000 });
+        console.log("🚀 ~ file: index.tsx:36 ~ Register ~ err:", err)
+        toast.error("Username already exist !", { duration: 3000 });
       });
   };
 
@@ -67,22 +68,22 @@ export default function Register() {
         className="border p-2 m-5"
         type="password"
         {...register("password", {
-          minLength: 6,
+          minLength: 2,
           required: { value: true, message: "This is required" },
         })}
         placeholder="Please enter password"
       />
-      {errors.password && <p>Password is not valide min 6 caracteres</p>}
+      {errors.password && <p>Password is not valide min 2 caracteres</p>}
       <input
         className="border p-2 m-5"
         type="password"
         {...register("confirmPassword", {
-          minLength: 6,
+          minLength: 2,
           required: { value: true, message: "This is required" },
         })}
         placeholder="Please confirm password"
       />
-      {errors.confirmPassword && <p>Password is not valide min 6 caracteres</p>}
+      {errors.confirmPassword && <p>Password is not valide min 2 caracteres</p>}
 
       <input type="submit" />
     </form>
