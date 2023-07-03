@@ -8,38 +8,26 @@ const headers = [
   {
     key: 1,
     text: "Type",
-    className:
-      "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0",
   },
   {
     key: 2,
     text: "Capacity",
-    className:
-      "border px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
   },
   {
     key: 3,
     text: "Duration",
-    className:
-      "border px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
   },
   {
     key: 4,
     text: "HandicappedAccess",
-    className:
-      "border px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
   },
   {
     key: 5,
     text: "Status",
-    className:
-      "border px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
   },
   {
     key: 5,
     text: "Last Maintenance",
-    className:
-      "border px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
   },
 ];
 
@@ -63,8 +51,8 @@ export default function SpaceDetails() {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="py-4">
-        <h1 className="text-2xl font-semibold text-gray-900 text-center">
-          Space {space?.name}
+        <h1 className="underline text-2xl font-semibold text-gray-900 text-center">
+          Space : {space?.name}
         </h1>
         <h2 className="text-xl font-semibold text-gray-900 text-center">
           Opening Hours : {space?.openingHours}
@@ -72,7 +60,7 @@ export default function SpaceDetails() {
         <div className="pt-12 grid grid-cols-3 gap-4">
           <span className="col-span-2">{space?.description}</span>
           <Image
-            className="col-span-1 "
+            className="rounded-xl border-2 border-slate-500 col-span-1 "
             src={space?.images}
             width={300}
             height={300}
@@ -83,8 +71,12 @@ export default function SpaceDetails() {
           <table className="border mt-12">
             <thead>
               <tr>
-                {headers.map(({ text, className, key }) => (
-                  <th key={key} scope="col" className={className}>
+                {headers.map(({ text, key }) => (
+                  <th
+                    key={key}
+                    scope="col"
+                    className="border px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                  >
                     {text}
                   </th>
                 ))}
