@@ -1,12 +1,15 @@
 import axios from "axios";
 import { API_URL } from "../utils/url";
 import { ISpace } from "../interfaces/space";
+import authHeader from '@/services/authHeader'; 
+import axios from "axios";
 
 class SpaceService {
   // Récupérer tous les espaces
   static async getAllSpaces(): Promise<ISpace[]> {
     try {
-      const response = await axios.get(`${API_URL}spaces/getallspaces`);
+
+      const response = await axios.get(`${API_URL}spaces/getallspaces`, { headers: authHeader() });
       return response.data as ISpace[];
     } catch (error) {
       throw new Error(`An error has occurred: ${error}`);
@@ -23,7 +26,7 @@ class SpaceService {
     }
   }
 
-  // Créer un nouvel espace
+ // Créer un nouvel espace
   static async createSpace(spaceData: ISpace): Promise<ISpace> {
     try {
       const response = await axios.post(
@@ -36,7 +39,7 @@ class SpaceService {
     }
   }
 
-  // Modifier un espace
+ // Modifier un espace
   static async updateSpace(
     id: string,
     updatedSpaceData: Partial<ISpace>

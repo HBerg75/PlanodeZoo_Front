@@ -4,7 +4,7 @@ export interface User {
     lastname: string;
     email: string;
     token: string;
-    roles: string[]
+    role: string
   }
   
   export interface RegisterForm {

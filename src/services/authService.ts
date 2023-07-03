@@ -1,8 +1,7 @@
 import axios from "axios";
 import { RegisterForm, LoginForm, User } from "@/interfaces/user";
 import { API_URL } from "../utils/url";
-
-
+import jwt_decode from "jwt-decode";
 class AuthService {
   async login(dataForm: LoginForm) {
     const response = await axios.post<User>(API_URL + "users/login", dataForm);
@@ -21,11 +20,16 @@ class AuthService {
   }
 
   getCurrentUser() {
-    const userStr = localStorage.getItem("user");
-    if (userStr) return JSON.parse(userStr);
-
+    if (typeof window !== 'undefined') {
+      const userStr = localStorage.getItem("user");
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        const decodedUser = jwt_decode(user.token) as User;
+        return decodedUser;
+      }
+    }
     return null;
-  }
+  }  
 }
 
 export default new AuthService();

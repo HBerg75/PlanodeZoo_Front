@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import SpaceService from "../../services/spaceService";
 import { ISpace } from "@/interfaces/space";
+import withAuth from "@/components/hoc/withAuth"; // 👈 HOC
 
 const tableHeaders = [
   "Name",
@@ -27,8 +28,13 @@ export default function Spaces() {
 
   useEffect(() => {
     const fetchSpaces = async () => {
-      const spacesData = await SpaceService.getAllSpaces();
-      setSpaces(spacesData);
+      try {
+        const spacesData = await SpaceService.getAllSpaces();
+        setSpaces(spacesData);
+        console.log("🚀 ~ file: spaces.tsx:16 ~ Spaces ~ spaces:", spaces)
+      } catch (err) {
+        console.log("🚀 ~ file: spaces.tsx:26 ~ fetchSpaces ~ err:", err)
+      }
     };
     fetchSpaces();
   }, []);
@@ -158,3 +164,4 @@ export default function Spaces() {
     </div>
   );
 }
+export default withAuth(Spaces);
