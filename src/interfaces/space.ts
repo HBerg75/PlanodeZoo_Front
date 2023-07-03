@@ -1,4 +1,5 @@
 export interface ISpace {
+  _id: string;
   name: string;
   description: string;
   images: string;
