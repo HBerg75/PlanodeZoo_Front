@@ -1,14 +1,15 @@
 import axios from "axios";
 import { API_URL } from "../utils/url";
 import { ISpace } from "../interfaces/space";
-import authHeader from '@/services/authHeader'; 
+import authHeader from "@/services/authHeader";
 
 class SpaceService {
   // Récupérer tous les espaces
   static async getAllSpaces(): Promise<ISpace[]> {
     try {
-
-      const response = await axios.get(`${API_URL}spaces/getallspaces`, { headers: authHeader() });
+      const response = await axios.get(`${API_URL}spaces/getallspaces`, {
+        headers: authHeader(),
+      });
       return response.data as ISpace[];
     } catch (error) {
       throw new Error(`An error has occurred: ${error}`);
@@ -18,19 +19,22 @@ class SpaceService {
   // Récupérer un espace par ID
   static async getSpaceById(id: string | string[]): Promise<ISpace> {
     try {
-      const response = await axios.get(`${API_URL}spaces/getspacebyid/${id}`);
+      const response = await axios.get(`${API_URL}spaces/getspacebyid/${id}`, {
+        headers: authHeader(),
+      });
       return response.data as ISpace;
     } catch (error) {
       throw new Error(`An error has occurred: ${error}`);
     }
   }
 
- // Créer un nouvel espace
+  // Créer un nouvel espace
   static async createSpace(spaceData: ISpace): Promise<ISpace> {
     try {
       const response = await axios.post(
         `${API_URL}spaces/createspace`,
-        spaceData
+        spaceData,
+        { headers: authHeader() }
       );
       return response.data as ISpace;
     } catch (error) {
@@ -38,7 +42,7 @@ class SpaceService {
     }
   }
 
- // Modifier un espace
+  // Modifier un espace
   static async updateSpace(
     id: string,
     updatedSpaceData: Partial<ISpace>
@@ -46,7 +50,8 @@ class SpaceService {
     try {
       const response = await axios.put(
         `${API_URL}spaces/update/${id}`,
-        updatedSpaceData
+        updatedSpaceData,
+        { headers: authHeader() }
       );
       return response.data as ISpace;
     } catch (error) {
@@ -57,7 +62,9 @@ class SpaceService {
   // Supprimer un espace
   static async deleteSpace(id: string): Promise<void> {
     try {
-      await axios.delete(`${API_URL}spaces/delete/${id}`);
+      await axios.delete(`${API_URL}spaces/delete/${id}`, {
+        headers: authHeader(),
+      });
     } catch (error) {
       throw new Error(`An error has occurred: ${error}`);
     }
@@ -76,7 +83,9 @@ class SpaceService {
   // Lever la maintenance d'un espace
   static async unsetMaintenance(id: string): Promise<ISpace> {
     try {
-      const response = await axios.put(`${API_URL}spaces/maintenanceoff/${id}`);
+      const response = await axios.put(
+        `${API_URL}spaces/maintenanceoff/${id}`,
+      );
       return response.data as ISpace;
     } catch (error) {
       throw new Error(`An error has occurred: ${error}`);
