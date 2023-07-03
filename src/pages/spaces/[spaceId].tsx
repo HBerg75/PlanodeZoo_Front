@@ -1,91 +1,114 @@
 import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import SpaceService from "../../services/spaceService";
+import { ISpace } from "@/interfaces/space";
+
+const headers = [
+  {
+    key: 1,
+    text: "Type",
+    className:
+      "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0",
+  },
+  {
+    key: 2,
+    text: "Capacity",
+    className:
+      "border px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
+  },
+  {
+    key: 3,
+    text: "Duration",
+    className:
+      "border px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
+  },
+  {
+    key: 4,
+    text: "HandicappedAccess",
+    className:
+      "border px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
+  },
+  {
+    key: 5,
+    text: "Status",
+    className:
+      "border px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
+  },
+  {
+    key: 5,
+    text: "Last Maintenance",
+    className:
+      "border px-3 py-3.5 text-left text-sm font-semibold text-gray-900",
+  },
+];
 
 export default function SpaceDetails() {
   const { query } = useRouter();
   const { spaceId } = query;
+  const [space, setSpace] = useState<ISpace>();
 
-  console.log(query);
+  useEffect(() => {
+    const fetchSpace = async () => {
+      if (spaceId) {
+        const spaceData = await SpaceService.getSpaceById(spaceId);
+        setSpace(spaceData);
+      }
+    };
+    fetchSpace();
+  }, [spaceId]);
+
+  console.log(space);
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="py-4">
         <h1 className="text-2xl font-semibold text-gray-900 text-center">
-          Space {spaceId}
+          Space {space?.name}
         </h1>
         <h2 className="text-xl font-semibold text-gray-900 text-center">
-          Opening Hours : 8am to 7pm
+          Opening Hours : {space?.openingHours}
         </h2>
         <div className="pt-12 grid grid-cols-3 gap-4">
-          <span className="col-span-2">
-            Description Lorem ipsum dolor sit, amet consectetur adipisicing
-            elit. Reprehenderit voluptatem illo perspiciatis dolor incidunt quis
-            quos veniam, accusantium libero ad quidem perferendis molestias
-            nostrum nulla sunt aliquam, minus quam sit? Lorem ipsum dolor sit
-            amet consectetur, adipisicing elit. Doloremque laborum repudiandae
-            ratione, sunt soluta exercitationem nam corporis, maxime fuga a
-            totam, accusamus modi ipsum. Esse voluptas magnam eius? Corporis,
-            animi.
-          </span>
+          <span className="col-span-2">{space?.description}</span>
           <Image
             className="col-span-1 "
-            src="https://st.depositphotos.com/1003345/1581/i/600/depositphotos_15810017-stock-photo-woman-feeding-the-elephant.jpg"
+            src={space?.images}
             width={300}
             height={300}
             alt="space"
           />
         </div>
         <div>
-          <table className="border pt-12">
+          <table className="border mt-12">
             <thead>
               <tr>
-                <th
-                  scope="col"
-                  className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                >
-                  Type
-                </th>
-                <th
-                  scope="col"
-                  className="border px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Capacity
-                </th>
-                <th
-                  scope="col"
-                  className="border px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Duration
-                </th>
-                <th
-                  scope="col"
-                  className="border px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  HandicappedAccess
-                </th>
-                <th
-                  scope="col"
-                  className="border px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                  Last Maintenance
-                </th>
+                {headers.map(({ text, className, key }) => (
+                  <th key={key} scope="col" className={className}>
+                    {text}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td className="border px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                  Meeting Room
+                  {space?.type}
                 </td>
                 <td className="border px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                  10
+                  {space?.capacity}
                 </td>
                 <td className="border px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                  1 hour
+                  {space?.duration}
                 </td>
                 <td className="border px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                  Yes
+                  {space?.handicappedAccess ? "Yes" : "No"}
                 </td>
                 <td className="border px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                  1 month ago
+                  {space?.status ? "Available" : "Not Available"}
+                </td>
+                <td className="border px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                  {space?.lastMaintenance}
                 </td>
               </tr>
             </tbody>
