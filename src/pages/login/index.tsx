@@ -3,10 +3,11 @@ import authServices from "@/services/authService";
 import toast from "react-hot-toast";
 import { LoginForm } from "@/interfaces/user";
 import { useRouter } from "next/router";
+import { useUser } from "@/utils/UserContext";
 
 export default function Login() {
   const router = useRouter();
-
+  const { setUser } = useUser();
   const {
     register,
     handleSubmit,
@@ -19,13 +20,17 @@ export default function Login() {
       .login(dataForm)
       .then((response) => {
         if (response.status === 200) {
-            toast.success("User was logged in !", { duration: 3000 });
-            
+          toast.success("User was logged in !", { duration: 3000 });
+          const user = authServices.getCurrentUser();
+          setUser(user);
           router.push("/");
         }
       })
       .catch((err) => {
-        console.log("🚀 ~ file: index.tsx:27 ~ constonSubmit:SubmitHandler<LoginForm>= ~ err:", err)
+        console.log(
+          "🚀 ~ file: index.tsx:27 ~ constonSubmit:SubmitHandler<LoginForm>= ~ err:",
+          err
+        );
         toast.error("Username or Password not found !", { duration: 3000 });
       });
     reset();

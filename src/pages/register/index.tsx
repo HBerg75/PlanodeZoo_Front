@@ -33,7 +33,7 @@ export default function Register() {
         }
       })
       .catch((err) => {
-        toast.error("Email already exists !", { duration: 3000 });
+        toast.error("Problem form !", { duration: 3000 });
       });
   };
 
