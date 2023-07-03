@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   TrashIcon,
   PencilSquareIcon,
@@ -7,32 +7,23 @@ import {
   CheckIcon,
 } from "@heroicons/react/24/outline";
 
-const spaces = [
-  {
-    id: "1",
-    name: "Jungle",
-    status: "Maintenance",
-    description:
-      "The jungle is a place where you can see a lot of animals like tiger or lion !",
-  },
-  {
-    id: "2",
-    name: "Ocean",
-    status: "Not in Maintenance",
-    description:
-      "The ocean is a place where you can see a lot of animals like shark or whale !",
-  },
-  {
-    id: "3",
-    name: "Lindsay Walton",
-    status: "Front-end Developer",
-    description: "lindsay.walton@example.com",
-  },
-];
+import SpaceService from "../../services/spaceService";
+import { ISpace } from "@/interfaces/space";
 
 export default function Spaces() {
+  const [spaces, setSpaces] = useState<ISpace[]>([]);
 
-  
+  useEffect(() => {
+    const fetchSpaces = async () => {
+      const spacesData = await SpaceService.getAllSpaces();
+      setSpaces(spacesData);
+    };
+    
+    fetchSpaces();
+  }, []);
+
+  console.log(spaces);
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
