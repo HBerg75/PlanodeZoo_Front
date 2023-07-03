@@ -2,7 +2,6 @@ import axios from "axios";
 import { API_URL } from "../utils/url";
 import { ISpace } from "../interfaces/space";
 import authHeader from '@/services/authHeader'; 
-import axios from "axios";
 
 class SpaceService {
   // Récupérer tous les espaces
