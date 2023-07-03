@@ -92,7 +92,10 @@ export default function Spaces() {
                       {item.description}
                     </td>{" "}
                     <td
-                      onClick={() => SpaceService.setMaintenance(item._id)}
+                      onClick={async () => {
+                        await SpaceService.setMaintenance(item._id);
+                        window.location.reload();
+                      }}
                       className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
                     >
                       <WrenchScrewdriverIcon
@@ -101,7 +104,10 @@ export default function Spaces() {
                       />
                     </td>
                     <td
-                      onClick={() => SpaceService.unsetMaintenance(item._id)}
+                      onClick={async () => {
+                        await SpaceService.unsetMaintenance(item._id);
+                        window.location.reload();
+                      }}
                       className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
                     >
                       <CheckIcon
@@ -126,7 +132,10 @@ export default function Spaces() {
                       />
                     </td>
                     <td
-                      onClick={() => SpaceService.deleteSpace(item._id)}
+                      onClick={async () => {
+                        await SpaceService.deleteSpace(item._id);
+                        window.location.reload();
+                      }}
                       className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0"
                     >
                       <TrashIcon
