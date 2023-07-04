@@ -41,6 +41,11 @@ export default function Navbar() {
                 <h1>ServiceBook</h1>
               </Link>
             )}
+             {user?.role === "admin" && (
+              <Link href="/animal/dashboard">
+                <h1>Animals</h1>
+              </Link>
+            )}
 
             {user?.role === "admin" && (
               <Link href="/ticket">

@@ -1,22 +1,27 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import ServiceBookService from "../../../services/serviceBook";
+import AnimalService from "../../../services/animalService";
 
 type FormData = {
-  spaceId: string;
-  rateFrequency: number;
-  lastMaintenance: Date;
-};
-
-type Servicebook = {
   _id: string;
+  name: string;
+  species: string;
+  healthStatus: string;
+  age: number;
   spaceId: string;
-  rateFrequency: number;
-  lastMaintenance: Date;
 };
 
-const ModifyServicebookPage = () => {
+type Animal = {
+  _id: string;
+  name: string;
+  species: string;
+  healthStatus: string;
+  age: number;
+  spaceId: string;
+};
+
+const ModifyAnimalPage = () => {
   const {
     register,
     handleSubmit,
@@ -25,29 +30,31 @@ const ModifyServicebookPage = () => {
   } = useForm<FormData>();
 
   const router = useRouter();
-  const { servicebookId } = router.query;
-  const [servicebook, setServicebook] = useState<Servicebook | null>(null);
+  const { animalId } = router.query;
+  const [animal, setAnimal] = useState<Animal | null>(null);
   const [valueToSubmit, setValueToSubmit] = useState<FormData | null>(null);
 
   useEffect(() => {
     // Récupère les données de l'espace que vous voulez modifier
     // Remplacez cela par votre propre logique pour obtenir les données de l'espace
     const fetchSpace = async () => {
-      if (servicebookId) {
-        const servicebookData = await ServiceBookService.getServiceBookById(
-          servicebookId
+      if (animalId) {
+        const animalData = await AnimalService.getAnimalById(
+          animalId
         );
-        setServicebook(servicebookData);
-        setValue("spaceId", servicebookData.spaceId);
-        setValue("rateFrequency", servicebookData.rateFrequency);
-        setValue("lastMaintenance", servicebookData.lastMaintenance);
+        setAnimal(animalData);
+        setValue("name", animalData.name);
+        setValue("species", animalData.species);
+        setValue("healthStatus", animalData.healthStatus);
+        setValue("age", animalData.age);
+        setValue("spaceId", animalData.spaceId);
       }
     };
 
-    if (servicebookId) {
+    if (animalId) {
       fetchSpace();
     }
-  }, [servicebookId, setValue]);
+  }, [animalId, setValue]);
 
   const onSubmit = (data: FormData) => {
     const dataToSubmit = {
@@ -56,13 +63,13 @@ const ModifyServicebookPage = () => {
     setValueToSubmit(dataToSubmit);
 
     if (valueToSubmit) {
-      ServiceBookService.updateServiceBook(servicebookId, dataToSubmit);
-      router.push("/servicebook/dashboard");
+      AnimalService.updateAnimal(animalId, dataToSubmit);
+      router.push("/animal/dashboard");
     }
   };
 
   console.log("valueToSubmit", valueToSubmit);
-  if (!servicebook) return <p>Chargement...</p>;
+  if (!animal) return <p>Chargement...</p>;
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12">
@@ -72,33 +79,53 @@ const ModifyServicebookPage = () => {
           className="flex flex-col space-y-4"
         >
           <label className="flex flex-col">
-            SpaceId :
+            Name :
             <input
-              {...register("spaceId", { required: true })}
+              {...register("name", { required: true })}
               className="mt-2 p-2 border rounded-md"
             />
-            {errors.spaceId && (
+            {errors.name && (
               <p className="mt-1 text-red-500">Ce champ est requis</p>
             )}
           </label>
 
           <label className="flex flex-col">
-            rateFrequency :
+          species :
             <input
-              {...register("rateFrequency", { required: true })}
+              {...register("species", { required: true })}
               className="mt-2 p-2 border rounded-md"
             />
-            {errors.rateFrequency && (
+            {errors.species && (
               <p className="mt-1 text-red-500">Ce champ est requis</p>
             )}
           </label>
           <label className="flex flex-col">
-          lastMaintenance :
+          healthStatus :
             <input
-              {...register("lastMaintenance", { required: true })}
+              {...register("healthStatus", { required: true })}
               className="mt-2 p-2 border rounded-md"
             />
-            {errors.lastMaintenance && (
+            {errors.healthStatus && (
+              <p className="mt-1 text-red-500">Ce champ est requis</p>
+            )}
+          </label>
+          <label className="flex flex-col">
+          age :
+            <input
+              {...register("age", { required: true })}
+              className="mt-2 p-2 border rounded-md"
+            />
+            {errors.age && (
+              <p className="mt-1 text-red-500">Ce champ est requis</p>
+            )}
+          </label>
+          <label className="flex flex-col">
+          spaceId :
+            <input
+              {...register("spaceId", { required: true })}
+              className="mt-2 p-2 border rounded-md"
+            />
+            {errors.spaceId && (
               <p className="mt-1 text-red-500">Ce champ est requis</p>
             )}
           </label>
@@ -112,4 +139,4 @@ const ModifyServicebookPage = () => {
   );
 };
 
-export default ModifyServicebookPage;
+export default ModifyAnimalPage;
