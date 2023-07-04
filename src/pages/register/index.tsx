@@ -26,7 +26,7 @@ export default function Register() {
       .then((response) => {
         console.log("🚀 ~ file: index.tsx:27 ~ .then ~ response:", response)
         if (response.status === 201) {
-          router.push("/login");
+          // router.push("/login");
           toast.success("User was registered !", { duration: 3000 });
           console.log("🚀 ~ file: index.tsx:30 ~ user register")
           

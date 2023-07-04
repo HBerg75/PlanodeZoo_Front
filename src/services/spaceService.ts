@@ -15,6 +15,15 @@ class SpaceService {
     }
   }
 
+  static async getSpaceByName(name: string): Promise<ISpace> {
+    try {
+      const response = await axios.get(`${API_URL}spaces/getspacebyname/${name}`, { headers: authHeader() });
+      return response.data as ISpace;
+    } catch (error) {
+      throw new Error(`An error has occurred: ${error}`);
+    }
+  }
+
   // Récupérer un espace par ID
   static async getSpaceById(id: string | string[]): Promise<ISpace> {
     try {

@@ -22,7 +22,7 @@ const tableHeaders = [
   "Delete",
 ];
 
-export default function Spaces() {
+function Spaces() {
   const [spaces, setSpaces] = useState<ISpace[]>([]);
   const router = useRouter();
 
