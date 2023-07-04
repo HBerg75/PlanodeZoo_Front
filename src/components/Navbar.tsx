@@ -32,8 +32,13 @@ export default function Navbar() {
             )}
 
             {user?.role === "admin" && (
-              <Link href="/spaces/spaces">
+              <Link href="/spaces/dashboard">
                 <h1>Zoo&apos;s Spaces</h1>
+              </Link>
+            )}
+            {user?.role === "admin" && (
+              <Link href="/servicebook/dashboard">
+                <h1>ServiceBook</h1>
               </Link>
             )}
 

@@ -198,4 +198,4 @@ const ModifySpacePage = () => {
   );
 };
 
-export default ModifySpacePage;
+export default ModifyServicebookPage;
