@@ -55,13 +55,13 @@ export default function Navbar() {
 
             {user?.role === "admin" && (
               <Link href="/statistiques">
-                <h1 className="mx-6">Statistiques</h1>
+                <h1 className="mx-6">Stats</h1>
               </Link>
             )}
 
             {user?.role === "admin" && (
               <Link href="/ticket">
-                <h1 className="mx-6">Créer tickets</h1>
+                <h1 className="mx-6">Tickets</h1>
               </Link>
             )}
             {user?.role === "veterinarian" && (
