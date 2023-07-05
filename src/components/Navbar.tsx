@@ -44,6 +44,12 @@ export default function Navbar() {
             )}
 
             {user?.role === "admin" && (
+              <Link href="/statistiques">
+                <h1>Statistiques</h1>
+              </Link>
+            )}
+
+            {user?.role === "admin" && (
               <Link href="/ticket">
                 <h1>Créer tickets</h1>
               </Link>
