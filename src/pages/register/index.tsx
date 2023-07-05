@@ -35,7 +35,7 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
     watch,
-    setValue, // Add setValue to your destructuring here
+    setValue, 
   } = useForm<RegisterForm>({
     defaultValues: {
       username: "",
@@ -90,6 +90,33 @@ export default function Register() {
         className="mx-auto flex flex-col w-[50%] border-2 border-gray-300 p-5 m-5 items-center bg-gray-100 rounded-lg shadow-lg"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <option value="">Select role...</option>
+        <option value="admin">Admin</option>
+        <option value="employee">Employee</option>
+        <option value="veterinarian">Veterinarian</option>
+        <option value="entretienAgent">Entretien Agent</option>
+        <option value="accueilAgent">Accueil Agent</option>
+        <option value="seller">Seller</option>
+        <option value="visitor">Visitor</option>
+      </select>
+      {errors.role && <p className="text-red-600">Role is required</p>}
+
+      {[
+        "employee",
+        "entretienAgent",
+        "seller",
+        "veterinarian",
+        "accueilAgent",
+      ].includes(watchRole) && (
+        <Select
+          isMulti
+          className="w-3/4 m-5"
+          name="assignedDays"
+          options={days}
+          placeholder="Select days..."
+          styles={selectStyle}
+          onChange={handleDaysChange}
+
         <h1 className="text-3xl font-bold">Register</h1>
         <input
           className="border-2 border-gray-300 p-2 m-5 rounded-lg w-3/4"

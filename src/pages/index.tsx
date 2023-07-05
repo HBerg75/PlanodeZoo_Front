@@ -3,6 +3,7 @@ import { SquaresPlusIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 import SpaceService from "@/services/spaceService";
 import { ISpace } from "@/interfaces/space";
+import ZooService from "@/services/zooService";
 import { useUser } from "@/utils/UserContext";
 import UserService from "@/services/userService";
 import ticketService from "@/services/ticketService";
@@ -11,6 +12,22 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [spaces, setSpaces] = useState<ISpace[]>([]);
+  const [canOpen, setCanOpen] = useState(false);
+
+  useEffect(() => {
+    const checkZooStatus = async () => {
+      try {
+        const response = await ZooService.canZooOpen();
+        setCanOpen(response.data.canOpen);
+        console.log("🚀 ~ file: index.tsx:19 ~ checkZooStatus ~ response.data:", response.data)
+      } catch (err) {
+        console.log("Error checking if zoo can open:", err);
+      }
+    };
+
+    checkZooStatus();
+  }, []);
+
   const [userTickets, setUserTickets] = useState<string[]>([]);
   const [userName, setUserName] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -73,6 +90,14 @@ export default function Home() {
       <h1 className="text-center text-2xl bold pb-6">
         Welcome to the Planode ZOO
       </h1>
+      <h2
+        className={`text-center text-4xl bold pb-6 ${
+          canOpen ? "text-green-600" : "text-red-600"
+        } blink`}
+      >
+        {canOpen ? "🚀 The Zoo is Open!" : "🚧 The Zoo is Closed!"}
+      </h2>
+
       <h2 className="text-center text-xl bold pb-6">
         Get access to your favorite space
       </h2>
