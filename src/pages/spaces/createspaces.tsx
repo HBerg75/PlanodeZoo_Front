@@ -37,7 +37,7 @@ const CreateSpacesPage = () => {
 
     if (valueToSubmit) {
       SpaceService.createSpace(dataToSubmit);
-      router.push("/spaces/spaces");
+      router.push("/spaces/dashboard");
     }
   };
 
