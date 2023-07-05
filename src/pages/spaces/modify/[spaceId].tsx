@@ -11,8 +11,8 @@ type FormData = {
   capacity: number;
   duration: number;
   openingHours: string;
-  handicappedAccess: boolean;
-  status: boolean;
+  handicappedAccess: string | boolean;
+  status: boolean | string;
   lastMaintenance: Date;
 };
 
@@ -41,6 +41,7 @@ const ModifySpacePage = () => {
   const router = useRouter();
   const { spaceId } = router.query;
   const [space, setSpace] = useState<Space | null>(null);
+  const [valueToSubmit, setValueToSubmit] = useState<FormData | null>(null);
 
   useEffect(() => {
     // Récupère les données de l'espace que vous voulez modifier
@@ -66,10 +67,20 @@ const ModifySpacePage = () => {
   }, [spaceId, setValue]);
 
   const onSubmit = (data: FormData) => {
-   
-    console.log(data);
+    const dataToSubmit = {
+      ...data,
+      handicappedAccess: data.handicappedAccess === "true",
+      status: data.status === "true",
+    };
+    setValueToSubmit(dataToSubmit);
+
+    if (valueToSubmit) {
+      SpaceService.updateSpace(spaceId, dataToSubmit);
+      router.push("/spaces/spaces");
+    }
   };
 
+  console.log("valueToSubmit", valueToSubmit);
   if (!space) return <p>Chargement...</p>;
 
   return (
@@ -187,4 +198,4 @@ const ModifySpacePage = () => {
   );
 };
 
-export default ModifySpacePage;
+export default ModifyServicebookPage;
