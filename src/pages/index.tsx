@@ -3,17 +3,25 @@ import { SquaresPlusIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 import SpaceService from "@/services/spaceService";
 import { ISpace } from "@/interfaces/space";
+import { useUser } from "@/utils/UserContext";
+import UserService from "@/services/userService";
+import ticketService from "@/services/ticketService";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [spaces, setSpaces] = useState<ISpace[]>([]);
+  const [userTickets, setUserTickets] = useState<string[]>([]);
+  const [userName, setUserName] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const { user } = useUser();
+
   useEffect(() => {
     const fetchSpaces = async () => {
       try {
         const spacesData = await SpaceService.getAllSpaces();
         setSpaces(spacesData);
-        console.log("🚀 ~ file: spaces.tsx:16 ~ Spaces ~ spaces:", spaces);
       } catch (err) {
         console.log("🚀 ~ file: spaces.tsx:26 ~ fetchSpaces ~ err:", err);
       }
@@ -21,10 +29,53 @@ export default function Home() {
     fetchSpaces();
   }, []);
 
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        if (user?.userId) {
+          const username = await UserService.getUserById(user?.userId);
+          setUserName(username.data.username);
+        }
+      } catch (err) {
+        console.log("🚀 ~ file: spaces.tsx:26 ~ fetchSpaces ~ err:", err);
+      }
+    };
+    fetchUsername();
+  }, [user]);
+
+  useEffect(() => {
+    const fetchTicket = async () => {
+      try {
+        if (userName) {
+          const userTickets = await ticketService.checkTicket(userName);
+          setUserTickets(userTickets.data.tickets[0].allowedSpaces);
+        }
+      } catch (err) {
+        console.log("🚀 ~ file: spaces.tsx:26 ~ fetchSpaces ~ err:", err);
+      }
+    };
+    fetchTicket();
+  }, [userName]);
+
+  const handleTicket = async (spaceId: string) => {
+    console.log("Checking for ID:", spaceId);
+
+    if (Array.isArray(userTickets) && userTickets.includes(spaceId)) {
+      setModalMessage("Vous pouvez rentrer dans cet espace");
+    } else {
+      setModalMessage("Vous n'avez pas de ticket pour accéder à cet espace");
+    }
+    setIsModalOpen(true);
+  };
+
   return (
     <>
-    <h1 className="text-center text-2xl bold pb-6">Welcome to the Planode ZOO</h1>
-    <h2 className="text-center text-xl bold pb-6">Get access to your favorite space</h2>
+      <h1 className="text-center text-2xl bold pb-6">
+        Welcome to the Planode ZOO
+      </h1>
+      <h2 className="text-center text-xl bold pb-6">
+        Get access to your favorite space
+      </h2>
       <ul
         role="list"
         className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
@@ -55,7 +106,13 @@ export default function Home() {
             <div>
               <div className="-mt-px flex divide-x divide-gray-200">
                 <div className="flex w-0 flex-1">
-                  <button className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900">
+                  <button
+                    key={space._id}
+                    onClick={() => {
+                      handleTicket(space._id);
+                    }}
+                    className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                  >
                     <SquaresPlusIcon
                       className="h-5 w-5 text-gray-400"
                       aria-hidden="true"
@@ -68,6 +125,20 @@ export default function Home() {
           </li>
         ))}
       </ul>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-5 rounded-lg w-80 text-center">
+            <p className="mb-4">{modalMessage}</p>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+              onClick={() => setIsModalOpen(false)}
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

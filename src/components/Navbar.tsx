@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useUser } from "@/utils/UserContext";
 import authService from "@/services/authService";
+import { useEffect } from "react";
+import userService from "@/services/userService";
 
 export default function Navbar() {
   const { user, setUser } = useUser();
@@ -59,7 +61,7 @@ export default function Navbar() {
               </Link>
             )}
 
-            {user?.role === "admin" && (
+            {(user?.role === "admin" || user?.role === "accueilAgent") && (
               <Link href="/ticket">
                 <h1 className="mx-6">Tickets</h1>
               </Link>
