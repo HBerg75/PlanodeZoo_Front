@@ -3,11 +3,28 @@ import { SquaresPlusIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 import SpaceService from "@/services/spaceService";
 import { ISpace } from "@/interfaces/space";
+import ZooService from "@/services/zooService";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [spaces, setSpaces] = useState<ISpace[]>([]);
+  const [canOpen, setCanOpen] = useState(false);
+
+  useEffect(() => {
+    const checkZooStatus = async () => {
+      try {
+        const response = await ZooService.canZooOpen();
+        setCanOpen(response.data.canOpen);
+        console.log("🚀 ~ file: index.tsx:19 ~ checkZooStatus ~ response.data:", response.data)
+      } catch (err) {
+        console.log("Error checking if zoo can open:", err);
+      }
+    };
+
+    checkZooStatus();
+  }, []);
+
   useEffect(() => {
     const fetchSpaces = async () => {
       try {
@@ -23,8 +40,20 @@ export default function Home() {
 
   return (
     <>
-    <h1 className="text-center text-2xl bold pb-6">Welcome to the Planode ZOO</h1>
-    <h2 className="text-center text-xl bold pb-6">Get access to your favorite space</h2>
+      <h1 className="text-center text-2xl bold pb-6">
+        Welcome to the Planode ZOO
+      </h1>
+      <h2
+        className={`text-center text-4xl bold pb-6 ${
+          canOpen ? "text-green-600" : "text-red-600"
+        } blink`}
+      >
+        {canOpen ? "🚀 The Zoo is Open!" : "🚧 The Zoo is Closed!"}
+      </h2>
+
+      <h2 className="text-center text-xl bold pb-6">
+        Get access to your favorite space
+      </h2>
       <ul
         role="list"
         className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
