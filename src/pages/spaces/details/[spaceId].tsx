@@ -49,8 +49,8 @@ export default function SpaceDetails() {
   console.log(space);
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <div className="py-4">
+    <div className="px-6 sm:px-6 lg:px-8 ">
+      <div className="py-4 px-4 border-slate-200 border-2 rounded-3xl shadow-lg">
         <h1 className="underline text-2xl font-semibold text-gray-900 text-center">
           Space : {space?.name}
         </h1>
@@ -59,7 +59,7 @@ export default function SpaceDetails() {
         </h2>
         <div className="pt-12 grid grid-cols-3 gap-4">
           <span className="col-span-2">{space?.description}</span>
-          <Image
+          <img
             className="rounded-xl border-2 border-slate-500 col-span-1 "
             src={space?.images}
             width={300}
@@ -68,7 +68,7 @@ export default function SpaceDetails() {
           />
         </div>
         <div>
-          <table className="border mt-12">
+          <table className="border border-2 mt-3 mx-auto text-center">
             <thead>
               <tr>
                 {headers.map(({ text, key }) => (

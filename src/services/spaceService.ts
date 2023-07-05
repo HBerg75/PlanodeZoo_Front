@@ -8,7 +8,7 @@ class SpaceService {
   static async getAllSpaces(): Promise<ISpace[]> {
     try {
       const response = await axios.get(`${API_URL}spaces/getallspaces`, {
-        headers: authHeader(),
+        // headers: authHeader(),
       });
       return response.data as ISpace[];
     } catch (error) {
