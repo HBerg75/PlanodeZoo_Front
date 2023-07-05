@@ -14,7 +14,6 @@ import withAuth from "@/components/hoc/withAuth"; // 👈 HOC
 const tableHeaders = [
   "Name",
   "Status",
-  "Description",
   "Maintenance",
   "Maintenance Off",
   "Details",
@@ -104,9 +103,6 @@ function Spaces() {
                     >
                       {item.status ? "En maintenance" : "Fonctionnel"}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {item.description}
-                    </td>{" "}
                     <td
                       onClick={async () => {
                         await SpaceService.setMaintenance(item._id);

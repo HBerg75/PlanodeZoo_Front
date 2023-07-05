@@ -3,7 +3,7 @@ import authServices from "@/services/authService";
 import toast from "react-hot-toast";
 import { RegisterForm, Role } from "@/interfaces/user";
 import { useRouter } from "next/router";
-import Select from "react-select"; 
+import Select from "react-select";
 
 const days = [
   { value: "Monday", label: "Monday" },
@@ -13,7 +13,7 @@ const days = [
   { value: "Friday", label: "Friday" },
   { value: "Saturday", label: "Saturday" },
   { value: "Sunday", label: "Sunday" },
-]; 
+];
 
 const selectStyle = {
   control: (base: any) => ({
@@ -35,7 +35,7 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
     watch,
-    setValue, // Add setValue to your destructuring here
+    setValue, 
   } = useForm<RegisterForm>({
     defaultValues: {
       username: "",
@@ -82,27 +82,13 @@ export default function Register() {
         toast.error("Username already exist !", { duration: 3000 });
       });
   };
+  
 
   return (
     <div className="flex justify-center ">
-    <form
-    className="mx-auto flex flex-col w-[50%] border-2 border-gray-300 p-5 m-5 items-center bg-gray-100 rounded-lg shadow-lg"
-    onSubmit={handleSubmit(onSubmit)}
-    >
-      <h1 className="text-3xl font-bold">Register</h1>
-      <input
-        className="border-2 border-gray-300 p-2 m-5 rounded-lg w-3/4"
-        {...register("username", {
-          minLength: 2,
-          required: { value: true, message: "This is required" },
-        })}
-        placeholder="Username"
-      />
-      {errors.username && <p className="text-red-600">username is not valid</p>}
-
-      <select
-        className="border-2 border-gray-300 p-2 m-5 rounded-lg w-3/4"
-        {...register("role", { required: true })}
+      <form
+        className="mx-auto flex flex-col w-[50%] border-2 border-gray-300 p-5 m-5 items-center bg-gray-100 rounded-lg shadow-lg"
+        onSubmit={handleSubmit(onSubmit)}
       >
         <option value="">Select role...</option>
         <option value="admin">Admin</option>
@@ -130,50 +116,96 @@ export default function Register() {
           placeholder="Select days..."
           styles={selectStyle}
           onChange={handleDaysChange}
+
+        <h1 className="text-3xl font-bold">Register</h1>
+        <input
+          className="border-2 border-gray-300 p-2 m-5 rounded-lg w-3/4"
+          {...register("username", {
+            minLength: 2,
+            required: { value: true, message: "This is required" },
+          })}
+          placeholder="Username"
         />
-      )}
+        {errors.username && (
+          <p className="text-red-600">username is not valid</p>
+        )}
 
-      {errors.assignedDays && (
-        <p className="text-red-600">Assigned days are required for this role</p>
-      )}
+        <select
+          className="border-2 border-gray-300 p-2 m-5 rounded-lg w-3/4"
+          {...register("role", { required: true })}
+        >
+          <option value="">Select role...</option>
+          <option value="admin">Admin</option>
+          <option value="employee">Employee</option>
+          <option value="veterinarian">Veterinarian</option>
+          <option value="entretienAgent">Entretien Agent</option>
+          <option value="seller">Seller</option>
+          <option value="acceuilAgent">acceuilAgent</option>
+          <option value="visitor">Visitor</option>
+        </select>
+        {errors.role && <p className="text-red-600">Role is required</p>}
 
-      <input
-        className="border-2 border-gray-300 p-2 m-5 rounded-lg w-3/4"
-        type="password"
-        {...register("password", {
-          minLength: 2,
-          required: { value: true, message: "This is required" },
-        })}
-        placeholder="Please enter password"
-      />
-      {errors.password && (
-        <p className="text-red-600">
-          Password is not valid. Min 2 characters required
-        </p>
-      )}
+        {[
+          "employee",
+          "entretienAgent",
+          "seller",
+          "veterinarian",
+          "accueilAgent",
+        ].includes(watchRole) && (
+          <Select
+            isMulti
+            className="w-3/4 m-5"
+            name="assignedDays"
+            options={days}
+            placeholder="Select days..."
+            styles={selectStyle}
+            onChange={handleDaysChange}
+          />
+        )}
 
-      <input
-        className="border-2 border-gray-300 p-2 m-5 rounded-lg w-3/4"
-        type="password"
-        {...register("confirmPassword", {
-          minLength: 2,
-          required: { value: true, message: "This is required" },
-        })}
-        placeholder="Please confirm password"
-      />
-      {errors.confirmPassword && (
-        <p className="text-red-600">
-          Password is not valid. Min 2 characters required
-        </p>
-      )}
+        {errors.assignedDays && (
+          <p className="text-red-600">
+            Assigned days are required for this role
+          </p>
+        )}
 
-      <button
-        type="submit"
-        className="w-%[50] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      >
-        Register
-      </button>
-    </form>
+        <input
+          className="border-2 border-gray-300 p-2 m-5 rounded-lg w-3/4"
+          type="password"
+          {...register("password", {
+            minLength: 2,
+            required: { value: true, message: "This is required" },
+          })}
+          placeholder="Please enter password"
+        />
+        {errors.password && (
+          <p className="text-red-600">
+            Password is not valid. Min 2 characters required
+          </p>
+        )}
+
+        <input
+          className="border-2 border-gray-300 p-2 m-5 rounded-lg w-3/4"
+          type="password"
+          {...register("confirmPassword", {
+            minLength: 2,
+            required: { value: true, message: "This is required" },
+          })}
+          placeholder="Please confirm password"
+        />
+        {errors.confirmPassword && (
+          <p className="text-red-600">
+            Password is not valid. Min 2 characters required
+          </p>
+        )}
+
+        <button
+          type="submit"
+          className="w-%[50] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Register
+        </button>
+      </form>
     </div>
   );
 }

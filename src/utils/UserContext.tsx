@@ -3,7 +3,7 @@ import { User } from '@/interfaces/user';
 import authServices from '@/services/authService';
 
 interface UserContextProps {
-  user: User | null;
+  user: User | undefined | null;
   setUser: (user: User | null) => void;
 }
 
