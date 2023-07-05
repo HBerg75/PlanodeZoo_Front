@@ -52,6 +52,11 @@ export default function Navbar() {
                 <h1>Créer tickets</h1>
               </Link>
             )}
+            {user?.role === "veterinarian" && (
+              <Link href="/treatment/dashboard">
+                <h1>treatment</h1>
+              </Link>
+            )}
             {user && (
               <Link href="/login" onClick={logOut}>
                 <h1>Log out</h1>
