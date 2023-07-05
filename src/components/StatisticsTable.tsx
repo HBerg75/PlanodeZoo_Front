@@ -1,67 +1,32 @@
-import React, { useMemo } from 'react';
-import { Column, useTable, HeaderGroup, Row, Cell } from 'react-table';
+import React from "react";
+import { Stats } from "@/interfaces/stats";
 
-interface Stats {
-  _id: {
-    space: {
-      name: string;
-    };
-  };
-  count: number;
-}
 
 interface StatisticsTableProps {
   stats: Stats[];
 }
 
-type DataColumn = Column<Stats>;
-
-function StatisticsTable({ stats }: StatisticsTableProps) {
-  const data = useMemo(() => stats, [stats]);
-  const columns: DataColumn[] = useMemo(() => [
-    {
-      Header: 'Space',
-      accessor: '_id.space.name',
-    },
-    {
-      Header: 'Count',
-      accessor: 'count',
-    },
-  ], []);
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data: stats });
-
+const StatisticsTable: React.FC<StatisticsTableProps> = ({ stats }) => {
   return (
-    <table {...getTableProps()} className="table-auto border-collapse w-full">
-      <thead>
-        {headerGroups.map((headerGroup: HeaderGroup<Stats>) => (
-          <tr {...headerGroup.getHeaderGroupProps()} className="bg-gray-700 text-white text-left">
-            {headerGroup.headers.map((column: Column<Stats>) => (
-              <th {...column.getHeaderProps()} className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider">{column.render('Header')}</th>
-            ))}
+    <div className="mx-auto w-full max-w-4xl"> {/* Ajout d'un conteneur avec une largeur maximale */}
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3">Espace</th>
+            <th className="px-6 py-3">Nombre de tickets</th>
           </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()} className="text-gray-700">
-        {rows.map((row: Row<Stats>) => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()} className="border-t">
-              {row.cells.map((cell: Cell<Stats>) => (
-                <td {...cell.getCellProps()} className="px-6 py-4 whitespace-nowrap">{cell.render('Cell')}</td>
-              ))}
+        </thead>
+        <tbody className="bg-white text-sm text-gray-500">
+          {stats.map((stat: Stats, index: number) => (
+            <tr key={index} className="text-center border-t border-gray-200">
+              <td className="px-6 py-4 whitespace-nowrap">{stat.name}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{stat.count}</td>
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
-}
+};
 
 export default StatisticsTable;

@@ -1,9 +1,5 @@
-interface Stats {
-    _id: {
-      space: {
-        name: string;
-      };
-    };
+export interface Stats {
+    name: string;
     count: number;
   }
   
