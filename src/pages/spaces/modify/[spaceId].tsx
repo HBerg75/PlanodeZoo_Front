@@ -76,7 +76,7 @@ const ModifySpacePage = () => {
 
     if (valueToSubmit) {
       SpaceService.updateSpace(spaceId, dataToSubmit);
-      router.push("/spaces/spaces");
+      router.push("/spaces/dashboard");
     }
   };
 
@@ -198,4 +198,4 @@ const ModifySpacePage = () => {
   );
 };
 
-export default ModifyServicebookPage;
+export default ModifySpacePage;

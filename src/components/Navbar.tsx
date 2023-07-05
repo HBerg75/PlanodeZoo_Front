@@ -19,59 +19,59 @@ export default function Navbar() {
               <h1>Home</h1>
             </Link>
           </div>
-          <div className="hidden md:flex items-center flex-1 justify-evenly">
+          <div className="hidden md:flex items-center flex-1 justify-evenly mx-6 ">
             {!user && (
               <Link href="/login">
-                <h1>Login</h1>
+                <h1 className="mx-6">Login</h1>
               </Link>
             )}
             {user?.role === "admin" && (
               <Link href="/register">
-                <h1>Register</h1>
+                <h1 className="mx-6">Register</h1>
               </Link>
             )}
 
             {user?.role === "admin" && (
               <Link href="/spaces/dashboard">
-                <h1>Zoo&apos;s Spaces</h1>
+                <h1 className="mx-6">Zoo&apos;s Spaces</h1>
               </Link>
             )}
             {user?.role === "admin" && (
               <Link href="/servicebook/dashboard">
-                <h1>ServiceBook</h1>
+                <h1 className="mx-6">ServiceBook</h1>
               </Link>
             )}
              {user?.role === "admin" && (
               <Link href="/animal/dashboard">
-                <h1>Animals</h1>
+                <h1 className="mx-6">Animals</h1>
               </Link>
             )}
 
             {user?.role === "admin" && (
               <Link href="/panelAdmin">
-                <h1>Panel Admin</h1>
+                <h1 className="mx-6">Panel Admin</h1>
               </Link>
             )}
 
             {user?.role === "admin" && (
               <Link href="/statistiques">
-                <h1>Statistiques</h1>
+                <h1 className="mx-6">Statistiques</h1>
               </Link>
             )}
 
             {user?.role === "admin" && (
               <Link href="/ticket">
-                <h1>Créer tickets</h1>
+                <h1 className="mx-6">Créer tickets</h1>
               </Link>
             )}
             {user?.role === "veterinarian" && (
               <Link href="/treatment/dashboard">
-                <h1>treatment</h1>
+                <h1 className="mx-6">treatment</h1>
               </Link>
             )}
             {user && (
               <Link href="/login" onClick={logOut}>
-                <h1>Log out</h1>
+                <h1 className="mx-6">Log out</h1>
               </Link>
             )}
           </div>
